@@ -3,7 +3,11 @@
 Simple [Dashing](http://shopify.github.com/dashing) job to display the commit counts of a specific year of all [Bitbucket](https://bitbucket.org) repositories. Uses [Bitbucket's API](https://confluence.atlassian.com/display/BITBUCKET/Using+the+Bitbucket+REST+APIs).
 Inspired by [jeroenbegyn's](https://gist.github.com/jeroenbegyn) [Bitbucket followers job for Dashing](https://gist.github.com/jeroenbegyn/5385092). Also it uses [vongrippen's](https://github.com/vongrippen) [BitBucketAPI](https://github.com/vongrippen/bitbucket), thanks for this!
 
+# Example
 
+Check this screenshot:
+
+![Screenshot](https://cloud.githubusercontent.com/assets/5159398/5564149/869c1d3a-8eac-11e4-8bc2-5723dc54058b.png)
 
 ##Usage
 
