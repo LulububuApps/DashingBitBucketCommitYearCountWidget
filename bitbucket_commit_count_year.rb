@@ -11,6 +11,9 @@ require 'json'
 # This job will count the commits of a all your bitbucket projects
 
 # Config
+bitbucket_repo_username = ""
+bitbucket_username = ""
+bitbucket_password = ""
 bitbucket_year = "2015"
 
 # Script
