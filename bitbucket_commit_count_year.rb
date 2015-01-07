@@ -11,9 +11,6 @@ require 'json'
 # This job will count the commits of a all your bitbucket projects
 
 # Config
-bitbucket_repo_username = ""
-bitbucket_username = ""
-bitbucket_password = ""
 bitbucket_year = "2015"
 
 # Script
@@ -27,24 +24,73 @@ def getCommitCount (bitbucket, username, date_start)
 	bitbucket.repos.list do |repo|
 		puts repo.slug
 		
+#		if repo.slug != ""
+#		    next  #debug
+#		end
+		
 		commit_count_repo = 0
 		
 		begin
-	
-		all_changesets = bitbucket.repos.changesets.all username, repo.slug
-
-		all_changesets.changesets.each do |changeset|
-			puts "--> #{changeset.node} (#{changeset.timestamp}, #{changeset.timestamp[0, 4]})"
 		
-			puts changeset.timestamp.inspect
+			processed = 0
 		
-			commit_count_total = commit_count_total + 1
-			commit_count_repo = commit_count_repo + 1
+			firstNode = {}
 			
-			if changeset.has_key?("timestamp") && changeset.timestamp[0, 4] == date_start 
-				commit_count = commit_count + 1
+			skipLast = false
+		
+			loop do	
+				all_changesets = bitbucket.repos.changesets.all username, repo.slug, :limit => 50, :start => firstNode
+				puts "sum #{ all_changesets["count"] }, got #{ all_changesets.changesets.count }" 
+			
+				count = all_changesets["count"]
+			
+				if skipLast 
+					puts "skipping first since its returned multiple times while skipping through the pages"
+				
+					skipLast = false
+					all_changesets.changesets.pop
+				end
+			
+				processed = processed + all_changesets.changesets.count
+			
+				firstNode = {}
+				
+				
+				
+				all_changesets.changesets.each do |changeset|
+
+				
+					puts "--> #{changeset.node} (#{changeset.timestamp}, #{changeset.timestamp[0, 4]})"
+				
+					puts changeset.timestamp.inspect
+				
+					if firstNode == {}
+						firstNode = changeset.node
+					end
+				
+					commit_count_total = commit_count_total + 1
+					commit_count_repo = commit_count_repo + 1
+					
+					if changeset.has_key?("timestamp") && changeset.timestamp[0, 4] == date_start 
+						commit_count = commit_count + 1
+					end
+				end
+			
+				if processed >= count
+					break;
+				end 
+			
+				skipLast = true
 			end
-		end
+		
+		
+		
+		
+		
+
+		
+
+		
 		
 		
 		puts "--> commit_count: #{commit_count}"
