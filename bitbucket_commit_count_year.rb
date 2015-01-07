@@ -4,6 +4,7 @@
 
 gem 'bitbucket_rest_api'
 
+require 'date'
 require 'net/http'
 require 'bitbucket_rest_api'
 require 'json'
@@ -24,13 +25,17 @@ def getCommitCount (bitbucket, username, date_start)
 	commit_count = 0
 	commit_count_total = 0
 	
+	current_year = Date.today.strftime("%Y")
+	
 	bitbucket.repos.list do |repo|
 		puts repo.slug
 		
+	    skipCommitPolling = repo.has_key?("utc_created_on") && repo.utc_created_on[0, 4] == date_start && current_year == date_start
+				
 #		if repo.slug != ""
 #		    next  #debug
 #		end
-		
+				
 		commit_count_repo = 0
 		
 		begin
@@ -46,6 +51,16 @@ def getCommitCount (bitbucket, username, date_start)
 				puts "sum #{ all_changesets["count"] }, got #{ all_changesets.changesets.count }" 
 			
 				count = all_changesets["count"]
+				
+				if skipCommitPolling
+					puts "repo was created in #{ date_start } and we still have #{ date_start }, so we can skip checking every single commit..."
+					
+					commit_count_total = commit_count_total + count
+					commit_count_repo = commit_count_repo + count
+					commit_count = commit_count + count	
+					
+					break;
+				end
 			
 				if skipLast 
 					puts "skipping first since its returned multiple times while skipping through the pages"
