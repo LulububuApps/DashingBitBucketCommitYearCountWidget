@@ -52,7 +52,7 @@ def getCommitCount (bitbucket, username, date_start)
 			
 				count = all_changesets["count"]
 				
-				if skipCommitPolling
+				if skipCommitPolling && count > 0 && all_changesets.changesets[0].has_key?("timestamp") && all_changesets.changesets[0].timestamp[0, 4] == date_start 
 					puts "repo was created in #{ date_start } and we still have #{ date_start }, so we can skip checking every single commit..."
 					
 					commit_count_total = commit_count_total + count
