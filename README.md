@@ -25,4 +25,12 @@ You'll need to add the Bitbucket username or the team name you want to count the
 
 The commits are fetched every 5 minutes, but you can change that by editing the job schedule.
 
+##Advanced
 
+Use [DashingLongNumberWidget](https://github.com/SocialbitGmbH/DashingLongNumberWidget) if you dont want `1000` commits displayed as `1K`.
+
+Example:
+
+    <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="bitbucket_commit_count_year" data-view="Longnumber" data-title="Bitbucket commits this year"></div>
+    </li>
