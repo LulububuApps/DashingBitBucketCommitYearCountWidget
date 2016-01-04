@@ -15,7 +15,7 @@ require 'json'
 bitbucket_repo_username = ""
 bitbucket_username = ""
 bitbucket_password = ""
-bitbucket_year = "2015"
+bitbucket_year = "2016"
 
 # Script
 bitbucket = BitBucket.new :basic_auth => "#{bitbucket_username}:#{bitbucket_password}"
